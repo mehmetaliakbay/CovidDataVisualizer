@@ -1,4 +1,4 @@
-package sample;
+package main;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,16 +10,17 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import main.model.CoronaData;
+import main.model.TableData;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.net.MalformedURLException;
 
 
 public class Controller implements Initializable {
-    ObservableList  selectedItems;
-    List<TableData> listTableData;
+    ObservableList selectedItems;
+    List<CoronaData> listTableData;
     //Line Chart
     @FXML
     private CategoryAxis x;
@@ -43,14 +44,15 @@ public class Controller implements Initializable {
 
 
     @FXML
-    private void onGetCountryClicked(){
+    private void onGetCountryClicked() {
 
         LineChart();
     }
 
     @FXML
     private void onGetUrlClicked() throws Exception {
-        TableView(new URL(txtUrl.getText()));
+        WebDataParser.parseEntry(new URL(txtUrl.getText()));
+        TableView();
         LineChart();
     }
 
@@ -62,37 +64,28 @@ public class Controller implements Initializable {
 //        }
 
         lineChart.getData().clear();
-        XYChart.Series<String,Integer> series;
-        for(Object o : selectedItems){
+        XYChart.Series<String, Integer> series;
+        for (Object o : selectedItems) {
 
-            series = new XYChart.Series<String,Integer>();
-            series.getData().add(new XYChart.Data<String,Integer>(o.toString(),
+            series = new XYChart.Series<String, Integer>();
+            series.getData().add(new XYChart.Data<String, Integer>(o.toString(),
                     100));
             series.setName(o.toString());
             lineChart.getData().addAll(series);
         }
 
 
-
-
     }
 
 
-
-    private void TableView(URL url) {
+    private void TableView() {
         myTable.getItems().clear();
         myTable.getColumns().clear();
 
-         listTableData = null;
-        try {
-            DataAnalyzer dataAnalyzer = new DataAnalyzer(url);
-            listTableData = dataAnalyzer.countryTableData();
+        listTableData = null;
+        listTableData = WebDataParser.countryTableData();
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ObservableList<TableData> olistTableData = FXCollections.observableList(listTableData);
+        ObservableList<CoronaData> olistTableData = FXCollections.observableList(listTableData);
         TableColumn country = new TableColumn("Country");
         TableColumn totalCases = new TableColumn("Total Cases");
         TableColumn newCases = new TableColumn("New Cases");
@@ -103,14 +96,14 @@ public class Controller implements Initializable {
         TableColumn attackRate = new TableColumn("Attack Rate");
         myTable.getColumns().addAll(country, totalCases, newCases, totalDeath, newDeath, population, mortality, attackRate);
 
-        country.setCellValueFactory(new PropertyValueFactory<TableData, String>("country"));
-        totalCases.setCellValueFactory(new PropertyValueFactory<TableData, Integer>("totalCases"));
-        newCases.setCellValueFactory(new PropertyValueFactory<TableData, Integer>("newCase"));
-        totalDeath.setCellValueFactory(new PropertyValueFactory<TableData, Integer>("totalDeath"));
-        newDeath.setCellValueFactory(new PropertyValueFactory<TableData, Integer>("newDeath"));
-        population.setCellValueFactory(new PropertyValueFactory<TableData, Integer>("population"));
-        mortality.setCellValueFactory(new PropertyValueFactory<TableData, Double>("mortality"));
-        attackRate.setCellValueFactory(new PropertyValueFactory<TableData, Double>("attackRate"));
+        country.setCellValueFactory(new PropertyValueFactory<CoronaData, String>("country"));
+        totalCases.setCellValueFactory(new PropertyValueFactory<CoronaData, Integer>("totalCases"));
+        newCases.setCellValueFactory(new PropertyValueFactory<CoronaData, Integer>("newCase"));
+        totalDeath.setCellValueFactory(new PropertyValueFactory<CoronaData, Integer>("totalDeath"));
+        newDeath.setCellValueFactory(new PropertyValueFactory<CoronaData, Integer>("newDeath"));
+        population.setCellValueFactory(new PropertyValueFactory<CoronaData, Integer>("population"));
+        mortality.setCellValueFactory(new PropertyValueFactory<CoronaData, Double>("mortality"));
+        attackRate.setCellValueFactory(new PropertyValueFactory<CoronaData, Double>("attackRate"));
 
         myTable.setItems(olistTableData);
 
@@ -118,12 +111,11 @@ public class Controller implements Initializable {
         listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         ObservableList<String> data = FXCollections.observableArrayList();
-        for (TableData list:listTableData) {
+        for (CoronaData list : listTableData) {
             data.add(list.getCountry());
         }
 
         listView.setItems(data);
-
 
 
     }

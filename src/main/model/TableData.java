@@ -1,4 +1,4 @@
-package sample;
+package main.model;
 
 public class TableData {
     private Integer newCase;

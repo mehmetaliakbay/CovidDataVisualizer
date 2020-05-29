@@ -1,4 +1,7 @@
-package sample;
+package main;
+
+import main.model.CoronaData;
+import main.model.TableData;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -8,10 +11,14 @@ import java.util.regex.Pattern;
 
 
 public class WebDataParser {
-    private static Map<String, ArrayList<CoronaData>> map = new HashMap<String, ArrayList<CoronaData>>();
-    private static List<CoronaData> list = new ArrayList<CoronaData>();
+    private static List<CoronaData> list;
+
+    //Map values according to country
+    //country is key
+    private static Map<String, CoronaData> tableMap;
 
     public static List<CoronaData> parseEntry(URL url) throws Exception {
+        list = new ArrayList<CoronaData>();
         InputStream in = url.openStream();
         Scanner scan = new Scanner(in);
         StringBuilder sb = new StringBuilder();
@@ -31,6 +38,7 @@ public class WebDataParser {
         while (groupMatcherRecord.find()) {
             recordList.add(groupMatcherRecord.group(2));
         }
+        Collections.reverse(recordList);
 //      System.out.println(recordList.size());
 //        int index;
         for (String s : recordList) {
@@ -82,6 +90,8 @@ public class WebDataParser {
         return list;
     }
 
+
+
     private static String parseRecord(StringBuilder stringBuilder,String regEx) {
         Pattern groupPattern = Pattern.compile(regEx);
         String record = null;
@@ -90,6 +100,39 @@ public class WebDataParser {
             record = groupMatcher.group(2);
         }
         return record;
+    }
+
+    // creating table data according to country
+    public static List<CoronaData> countryTableData() {
+        tableMap = new HashMap<String, CoronaData>();
+
+        for (CoronaData data : list) {
+            if (tableMap.containsKey(data.getCountry())) {
+                Integer totalCases = tableMap.get(data.getCountry()).getTotalCases() + data.getNewCase();
+                Integer totalDeath = tableMap.get(data.getCountry()).getTotalDeath() + data.getNewDeath();
+                Integer population = data.getPopulation();
+                Integer newDeath = data.getNewDeath();
+                Double mortality = 0.0;
+                if (totalCases != 0)
+                    mortality = Double.valueOf(totalDeath) / Double.valueOf(totalCases);
+
+                Double attackRate = 0.0;
+                if (population != 0)
+                    attackRate = Double.valueOf(totalCases) / Double.valueOf(population);
+
+                tableMap.put(data.getCountry(), new CoronaData(data.getNewCase(), data.getNewDeath(), data.getCountry(), data.getPopulation(),
+                        totalCases, totalDeath, mortality, attackRate));
+            } else {
+                tableMap.put(data.getCountry(), new CoronaData(data.getNewCase(), data.getNewDeath(), data.getCountry(), data.getPopulation(),
+                        data.getNewCase(), data.getNewDeath(), 0.0, 0.0));
+            }
+        }
+
+        Collection<CoronaData> values = tableMap.values();
+        List<CoronaData> tableData = new ArrayList<CoronaData>(values);
+
+        return tableData;
+
     }
 
 

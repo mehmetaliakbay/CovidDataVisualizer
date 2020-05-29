@@ -1,4 +1,4 @@
-package sample;
+package main.model;
 
 
 public class CoronaData {
@@ -11,8 +11,10 @@ public class CoronaData {
     private String country;
     private Integer population;
     private String continent;
-
-
+    private Integer totalCases;
+    private Integer totalDeath;
+    private Double mortality;
+    private Double attackRate;
 
 
     public CoronaData(String time, Integer day, Integer month, Integer year,
@@ -29,7 +31,54 @@ public class CoronaData {
         this.continent = continent;
     }
 
+    /**
+     *Constructer for table view data
+     */
+    public CoronaData(Integer newCase, Integer newDeath, String country,
+                      Integer population, Integer totalCases, Integer totalDeath,
+                      Double mortality, Double attackRate) {
+        this.newCase = newCase;
+        this.newDeath = newDeath;
+        this.country = country;
+        this.population = population;
+        this.totalCases = totalCases;
+        this.totalDeath = totalDeath;
+        this.mortality = mortality;
+        this.attackRate = attackRate;
+    }
 
+
+    public Integer getTotalCases() {
+        return totalCases;
+    }
+
+    public void setTotalCases(Integer totalCases) {
+        this.totalCases = totalCases;
+    }
+
+    public Integer getTotalDeath() {
+        return totalDeath;
+    }
+
+    public void setTotalDeath(Integer totalDeath) {
+        this.totalDeath = totalDeath;
+    }
+
+    public Double getMortality() {
+        return mortality;
+    }
+
+    public void setMortality(Double mortality) {
+        this.mortality = mortality;
+    }
+
+    public Double getAttackRate() {
+        return attackRate;
+    }
+
+    public void setAttackRate(Double attackRate) {
+        this.attackRate = attackRate;
+    }
 
 
     public String getTime() {
