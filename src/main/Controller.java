@@ -14,7 +14,6 @@ import main.model.CoronaData;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.lang.Math;
 
 public class Controller implements Initializable {
     ObservableList selectedItems;
@@ -29,6 +28,9 @@ public class Controller implements Initializable {
 
     @FXML
     private LineChart<String, Integer> lineChart;
+
+    @FXML
+    private LineChart<String, Integer> lineChart2;
 
     //TableView
     @FXML
@@ -46,13 +48,14 @@ public class Controller implements Initializable {
     private void onGetCountryClicked() {
 
         LineChart();
+        LineChart2();
     }
 
     @FXML
     private void onGetUrlClicked() throws Exception {
        listCoronaData = WebDataParser.parseEntry(new URL(txtUrl.getText()));
         TableView();
-        LineChart();
+
     }
 
 
@@ -83,6 +86,34 @@ public class Controller implements Initializable {
 
 
     }
+    private void LineChart2() {
+        selectedItems = listView.getSelectionModel().getSelectedItems();
+
+
+        lineChart2.getData().clear();
+        lineChart2.getData().removeAll();
+        XYChart.Series<String, Integer> series;
+
+        for (Object o : selectedItems) {
+            series = new XYChart.Series<String, Integer>();
+            for (CoronaData cd: listCoronaData) {
+
+                if(cd.getCountry().equals(o.toString()) && cd.getTotalDeath()>0){
+
+                    series.getData().add(new XYChart.Data<String, Integer>(cd.getTime(), cd.getTotalCases()));
+                    series.setName(o.toString());
+
+                }
+
+            }
+//            lineChart.setLegendVisible(false);
+            lineChart2.setCreateSymbols(false);
+            lineChart2.getData().addAll(series);
+        }
+
+
+    }
+
 
 
     private void TableView() {

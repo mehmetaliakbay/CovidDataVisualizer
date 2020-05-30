@@ -41,10 +41,8 @@ public class WebDataParser {
             recordList.add(groupMatcherRecord.group(2));
         }
         Collections.reverse(recordList);
-//      System.out.println(recordList.size());
-//        int index;
+
         for (String s : recordList) {
-//            System.out.println(s);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(s);
 
@@ -64,7 +62,7 @@ public class WebDataParser {
 
             // for newcase parsing
             Integer newCase =  Integer.parseInt(parseRecord(stringBuilder,"(<cases>)(.*?)(</cases>)"));
-            
+
             // for newdeath parsing
             Integer newDeath= Integer.parseInt(parseRecord(stringBuilder,"(<deaths>)(.*?)(</deaths>)"));
 
@@ -84,16 +82,18 @@ public class WebDataParser {
             //for continent
             String continent = parseRecord(stringBuilder,"(<continentExp>)(.*?)(</continentExp>)");
             Integer totalDeath=0;
+            Integer totalCases=0;
             if(list !=null){
                 for (CoronaData cd : list) {
                     if (cd.getCountry().equals(country)){
                         totalDeath += cd.getNewDeath();
+                        totalCases += cd.getNewCase();
 
                     }
                 }
             }
 
-            list.add(new CoronaData(time,day,month,year,newCase,newDeath,country,population,continent,totalDeath));
+            list.add(new CoronaData(time,day,month,year,newCase,newDeath,country,population,continent,totalDeath,totalCases));
 
         }
 

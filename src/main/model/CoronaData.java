@@ -16,27 +16,12 @@ public class CoronaData {
     private Double mortality;
     private Double attackRate;
 
-    public CoronaData(String time, Integer day, Integer month, Integer year, Integer newCase,
-                      Integer newDeath, String country, Integer population, String continent,
-                      Integer totalCases, Integer totalDeath, Double mortality, Double attackRate) {
-        this.time = time;
-        this.day = day;
-        this.month = month;
-        this.year = year;
-        this.newCase = newCase;
-        this.newDeath = newDeath;
-        this.country = country;
-        this.population = population;
-        this.continent = continent;
-        this.totalCases = totalCases;
-        this.totalDeath = totalDeath;
-        this.mortality = mortality;
-        this.attackRate = attackRate;
-    }
-
+    /**
+     *  Constructer for parse data and create lineChart
+     */
     public CoronaData(String time, Integer day, Integer month, Integer year,
                       Integer newCase, Integer newDeath, String country,
-                      Integer population, String continent,Integer totalDeath) {
+                      Integer population, String continent,Integer totalDeath, Integer totalCases) {
         this.time = time;
         this.day = day;
         this.month = month;
@@ -47,6 +32,7 @@ public class CoronaData {
         this.population = population;
         this.continent = continent;
         this.totalDeath = totalDeath;
+        this.totalCases = totalCases;
     }
 
     /**
@@ -65,14 +51,6 @@ public class CoronaData {
         this.attackRate = attackRate;
     }
 
-    /**
-     * this constructer created for LineChart data
-     */
-    public CoronaData(String time, Integer totalCases, Integer totalDeath) {
-        this.time = time;
-        this.totalCases = totalCases;
-        this.totalDeath = totalDeath;
-    }
 
     public Integer getTotalCases() {
         return totalCases;
