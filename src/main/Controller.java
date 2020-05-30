@@ -11,16 +11,15 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.model.CoronaData;
-import main.model.TableData;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import java.lang.Math;
 
 public class Controller implements Initializable {
     ObservableList selectedItems;
     List<CoronaData> listTableData;
+    List<CoronaData> listCoronaData;
     //Line Chart
     @FXML
     private CategoryAxis x;
@@ -51,7 +50,7 @@ public class Controller implements Initializable {
 
     @FXML
     private void onGetUrlClicked() throws Exception {
-        WebDataParser.parseEntry(new URL(txtUrl.getText()));
+       listCoronaData = WebDataParser.parseEntry(new URL(txtUrl.getText()));
         TableView();
         LineChart();
     }
@@ -59,18 +58,26 @@ public class Controller implements Initializable {
 
     private void LineChart() {
         selectedItems = listView.getSelectionModel().getSelectedItems();
-//        for(Object o : selectedItems){
-//            System.out.println("o = " + o + " (" + o.getClass() + ")");
-//        }
+
 
         lineChart.getData().clear();
+        lineChart.getData().removeAll();
         XYChart.Series<String, Integer> series;
-        for (Object o : selectedItems) {
 
+        for (Object o : selectedItems) {
             series = new XYChart.Series<String, Integer>();
-            series.getData().add(new XYChart.Data<String, Integer>(o.toString(),
-                    100));
-            series.setName(o.toString());
+            for (CoronaData cd: listCoronaData) {
+
+                if(cd.getCountry().equals(o.toString()) && cd.getTotalDeath()>0){
+
+                    series.getData().add(new XYChart.Data<String, Integer>(cd.getTime(), cd.getTotalDeath()));
+                    series.setName(o.toString());
+
+                }
+
+            }
+//            lineChart.setLegendVisible(false);
+            lineChart.setCreateSymbols(false);
             lineChart.getData().addAll(series);
         }
 
@@ -81,7 +88,6 @@ public class Controller implements Initializable {
     private void TableView() {
         myTable.getItems().clear();
         myTable.getColumns().clear();
-
         listTableData = null;
         listTableData = WebDataParser.countryTableData();
 

@@ -1,7 +1,6 @@
 package main;
 
 import main.model.CoronaData;
-import main.model.TableData;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -16,6 +15,9 @@ public class WebDataParser {
     //Map values according to country
     //country is key
     private static Map<String, CoronaData> tableMap;
+
+    // List for LineChart data
+    private static List<CoronaData> lineData;
 
     public static List<CoronaData> parseEntry(URL url) throws Exception {
         list = new ArrayList<CoronaData>();
@@ -62,7 +64,7 @@ public class WebDataParser {
 
             // for newcase parsing
             Integer newCase =  Integer.parseInt(parseRecord(stringBuilder,"(<cases>)(.*?)(</cases>)"));
-
+            
             // for newdeath parsing
             Integer newDeath= Integer.parseInt(parseRecord(stringBuilder,"(<deaths>)(.*?)(</deaths>)"));
 
@@ -81,9 +83,17 @@ public class WebDataParser {
 
             //for continent
             String continent = parseRecord(stringBuilder,"(<continentExp>)(.*?)(</continentExp>)");
+            Integer totalDeath=0;
+            if(list !=null){
+                for (CoronaData cd : list) {
+                    if (cd.getCountry().equals(country)){
+                        totalDeath += cd.getNewDeath();
 
+                    }
+                }
+            }
 
-            list.add(new CoronaData(time,day,month,year,newCase,newDeath,country,population,continent));
+            list.add(new CoronaData(time,day,month,year,newCase,newDeath,country,population,continent,totalDeath));
 
         }
 
@@ -134,6 +144,16 @@ public class WebDataParser {
         return tableData;
 
     }
+
+//    public static List<CoronaData> countryTotalCasesLineChart(){
+//        lineData = new ArrayList<CoronaData>();
+//
+//        for (CoronaData data: list) {
+//
+//
+//        }
+//        return null;
+//    }
 
 
 }
