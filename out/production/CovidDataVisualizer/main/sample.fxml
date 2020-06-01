@@ -80,7 +80,7 @@
               <items>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="362.0">
                      <children>
-                        <LineChart fx:id="lineChart" layoutX="-169.0" layoutY="-1.0" title="Total Death by Country" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <LineChart fx:id="lChartTotalDeaths" layoutX="-169.0" layoutY="-1.0" title="Total Death by Country" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <xAxis>
                             <CategoryAxis label="Date" side="BOTTOM" fx:id="x" />
                           </xAxis>
@@ -113,7 +113,7 @@
                   <Insets right="30.0" top="30.0" />
                </GridPane.margin>
             </SplitPane>
-            <LineChart fx:id="lineChart2" title="Total Cases by Country" GridPane.rowIndex="4">
+            <LineChart fx:id="lChartTotalCases" title="Total Cases by Country" GridPane.rowIndex="4">
               <xAxis>
                 <CategoryAxis label="Date" side="BOTTOM" />
               </xAxis>

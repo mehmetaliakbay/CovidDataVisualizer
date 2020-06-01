@@ -3,43 +3,35 @@ package main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.model.CoronaData;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
-    ObservableList selectedItems;
-    List<CoronaData> listTableData;
-    List<CoronaData> listCoronaData;
-    //Line Chart
-    @FXML
-    private CategoryAxis x;
+public class Controller {
+    private ObservableList<String> selectedItems;
+    private List<CoronaData> listTableData;
+    private List<CoronaData> listCoronaData;
+
 
     @FXML
-    private NumberAxis y;
+    private LineChart<String, Integer> lChartTotalDeaths;
 
     @FXML
-    private LineChart<String, Integer> lineChart;
+    private LineChart<String, Integer> lChartTotalCases;
 
-    @FXML
-    private LineChart<String, Integer> lineChart2;
 
-    //TableView
     @FXML
     private TextField txtUrl;
 
     @FXML
     private TableView myTable;
 
-    //ListView
+
     @FXML
     private ListView<String> listView;
 
@@ -47,68 +39,68 @@ public class Controller implements Initializable {
     @FXML
     private void onGetCountryClicked() {
 
-        LineChart();
-        LineChart2();
+        LineChartTotalDeaths();
+        LineChartTotalCases();
     }
 
     @FXML
-    private void onGetUrlClicked() throws Exception {
-       listCoronaData = WebDataParser.parseEntry(new URL(txtUrl.getText()));
+    private void onGetUrlClicked() throws MalformedURLException {
+       listCoronaData = DataParser.parseEntry(new URL(txtUrl.getText()));
         TableView();
 
     }
 
 
-    private void LineChart() {
+    private void LineChartTotalDeaths() {
         selectedItems = listView.getSelectionModel().getSelectedItems();
 
 
-        lineChart.getData().clear();
-        lineChart.getData().removeAll();
+        lChartTotalDeaths.getData().clear();
+        lChartTotalDeaths.getData().removeAll();
         XYChart.Series<String, Integer> series;
 
-        for (Object o : selectedItems) {
-            series = new XYChart.Series<String, Integer>();
+        for (String s : selectedItems) {
+            series = new XYChart.Series<>();
             for (CoronaData cd: listCoronaData) {
 
-                if(cd.getCountry().equals(o.toString()) && cd.getTotalDeath()>0){
+                if(cd.getCountry().equals(s) && cd.getTotalDeath()>0){
 
-                    series.getData().add(new XYChart.Data<String, Integer>(cd.getTime(), cd.getTotalDeath()));
-                    series.setName(o.toString());
+                    series.getData().add(new XYChart.Data<>(cd.getTime(), cd.getTotalDeath()));
+                    series.setName(s);
 
                 }
 
             }
-//            lineChart.setLegendVisible(false);
-            lineChart.setCreateSymbols(false);
-            lineChart.getData().addAll(series);
+//            lChartTotalDeaths.setLegendVisible(false);
+            lChartTotalDeaths.setCreateSymbols(false);
+            lChartTotalDeaths.getData().addAll(series);
         }
 
 
     }
-    private void LineChart2() {
+    private void LineChartTotalCases() {
         selectedItems = listView.getSelectionModel().getSelectedItems();
 
 
-        lineChart2.getData().clear();
-        lineChart2.getData().removeAll();
+        lChartTotalCases.getData().clear();
+        lChartTotalCases.getData().removeAll();
         XYChart.Series<String, Integer> series;
 
-        for (Object o : selectedItems) {
-            series = new XYChart.Series<String, Integer>();
+        for (String s : selectedItems) {
+            series = new XYChart.Series<>();
             for (CoronaData cd: listCoronaData) {
 
-                if(cd.getCountry().equals(o.toString()) && cd.getTotalDeath()>0){
+                if(cd.getCountry().equals(s) && cd.getTotalDeath()>0){
 
-                    series.getData().add(new XYChart.Data<String, Integer>(cd.getTime(), cd.getTotalCases()));
-                    series.setName(o.toString());
+                    series.getData().add(new XYChart.Data<>(cd.getTime(), cd.getTotalCases()));
+                    series.setName(s);
 
                 }
 
             }
-//            lineChart.setLegendVisible(false);
-            lineChart2.setCreateSymbols(false);
-            lineChart2.getData().addAll(series);
+//          lChartTotalCases.setLegendVisible(false);
+            lChartTotalCases.setCreateSymbols(false);
+            lChartTotalCases.getData().addAll(series);
         }
 
 
@@ -120,7 +112,7 @@ public class Controller implements Initializable {
         myTable.getItems().clear();
         myTable.getColumns().clear();
         listTableData = null;
-        listTableData = WebDataParser.countryTableData();
+        listTableData = DataParser.countryTableData();
 
         ObservableList<CoronaData> olistTableData = FXCollections.observableList(listTableData);
         TableColumn country = new TableColumn("Country");
@@ -157,10 +149,5 @@ public class Controller implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
-    }
 
 }

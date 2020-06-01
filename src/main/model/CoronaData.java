@@ -16,6 +16,8 @@ public class CoronaData {
     private Double mortality;
     private Double attackRate;
 
+
+
     /**
      *  Constructer for parse data and create lineChart
      */
@@ -56,104 +58,42 @@ public class CoronaData {
         return totalCases;
     }
 
-    public void setTotalCases(Integer totalCases) {
-        this.totalCases = totalCases;
-    }
 
     public Integer getTotalDeath() {
         return totalDeath;
     }
 
-    public void setTotalDeath(Integer totalDeath) {
-        this.totalDeath = totalDeath;
+    public String getTime() {
+        return time;
+    }
+
+
+
+    public Integer getNewCase() {
+        return newCase;
+    }
+
+
+    public Integer getNewDeath() {
+        return newDeath;
+    }
+
+
+    public String getCountry() {
+        return country;
+    }
+
+
+    public Integer getPopulation() {
+        return population;
     }
 
     public Double getMortality() {
         return mortality;
     }
 
-    public void setMortality(Double mortality) {
-        this.mortality = mortality;
-    }
-
     public Double getAttackRate() {
         return attackRate;
     }
 
-    public void setAttackRate(Double attackRate) {
-        this.attackRate = attackRate;
-    }
-
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public Integer getDay() {
-        return day;
-    }
-
-    public void setDay(Integer day) {
-        this.day = day;
-    }
-
-    public Integer getMonth() {
-        return month;
-    }
-
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    public Integer getYear() {
-        return year;
-    }
-
-    public void setYear(Integer year) {
-        this.year = year;
-    }
-
-    public Integer getNewCase() {
-        return newCase;
-    }
-
-    public void setNewCase(Integer newCase) {
-        this.newCase = newCase;
-    }
-
-    public Integer getNewDeath() {
-        return newDeath;
-    }
-
-    public void setNewDeath(Integer newDeath) {
-        this.newDeath = newDeath;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Integer getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(Integer population) {
-        this.population = population;
-    }
-
-    public String getContinent() {
-        return continent;
-    }
-
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
 }

@@ -11,21 +11,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class WebDataParser {
+public final class  DataParser {
     private static List<CoronaData> list;
 
-    //Map values according to country
-    //country is key
-    private static Map<String, CoronaData> tableMap;
+    private DataParser() {
+    }
 
-    // List for LineChart data
-    private static List<CoronaData> lineData;
-
-    public static List<CoronaData> parseEntry(URL url) throws Exception {
-        list = new ArrayList<CoronaData>();
+    public static List<CoronaData> parseEntry(URL url) {
+        list = new ArrayList<>();
         InputStream in = null;
-        BufferedReader br;
-        StringBuilder sb=null;
+        BufferedReader br = null;
+        StringBuilder sb = null;
         String line;
         try {
             in = url.openStream();
@@ -41,6 +37,10 @@ public class WebDataParser {
                 if (in != null) {
                     in.close();
                 }
+                if (br != null) {
+                    br.close();
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -50,7 +50,7 @@ public class WebDataParser {
         //split <record> </record> pattern
         Pattern groupPattern = Pattern.compile("(<record>)(.*?)(</record>)");
         Matcher groupMatcherRecord = groupPattern.matcher(sb);
-        List<String> recordList = new ArrayList<String>();
+        List<String> recordList = new ArrayList<>();
         while (groupMatcherRecord.find()) {
             recordList.add(groupMatcherRecord.group(2));
         }
@@ -74,10 +74,10 @@ public class WebDataParser {
             // for year parsing
             Integer year = Integer.parseInt(parseRecord(stringBuilder, "(<year>)(.*?)(</year>)"));
 
-            // for newcase parsing
+            // for new case parsing
             Integer newCase = Integer.parseInt(parseRecord(stringBuilder, "(<cases>)(.*?)(</cases>)"));
 
-            // for newdeath parsing
+            // for new death parsing
             Integer newDeath = Integer.parseInt(parseRecord(stringBuilder, "(<deaths>)(.*?)(</deaths>)"));
 
             // for country parsing
@@ -90,22 +90,23 @@ public class WebDataParser {
                 population = 0;
             } else {
                 population = Integer.parseInt(parseRecord(stringBuilder, "(<popData2018>)(.*?)(</popData2018>)"));
-
             }
 
             //for continent
             String continent = parseRecord(stringBuilder, "(<continentExp>)(.*?)(</continentExp>)");
+
+
             Integer totalDeath = 0;
             Integer totalCases = 0;
-            if (list != null) {
-                for (CoronaData cd : list) {
-                    if (cd.getCountry().equals(country)) {
-                        totalDeath += cd.getNewDeath();
-                        totalCases += cd.getNewCase();
 
-                    }
+            for (CoronaData cd : list) {
+                if (cd.getCountry().equals(country)) {
+                    totalDeath += cd.getNewDeath();
+                    totalCases += cd.getNewCase();
+
                 }
             }
+
 
             list.add(new CoronaData(time, day, month, year, newCase, newDeath, country, population, continent, totalDeath, totalCases));
 
@@ -127,14 +128,16 @@ public class WebDataParser {
 
     // creating table data according to country
     public static List<CoronaData> countryTableData() {
-        tableMap = new HashMap<String, CoronaData>();
+        //Map values according to country
+        //country is key
+        Map<String, CoronaData> tableMap = new HashMap<>();
 
         for (CoronaData data : list) {
-            if (tableMap.containsKey(data.getCountry())) {
+            if (tableMap.containsKey(data.getCountry()))
+            {
                 Integer totalCases = tableMap.get(data.getCountry()).getTotalCases() + data.getNewCase();
                 Integer totalDeath = tableMap.get(data.getCountry()).getTotalDeath() + data.getNewDeath();
                 Integer population = data.getPopulation();
-                Integer newDeath = data.getNewDeath();
                 Double mortality = 0.0;
                 if (totalCases != 0)
                     mortality = Double.valueOf(totalDeath) / Double.valueOf(totalCases);
@@ -152,21 +155,11 @@ public class WebDataParser {
         }
 
         Collection<CoronaData> values = tableMap.values();
-        List<CoronaData> tableData = new ArrayList<CoronaData>(values);
 
-        return tableData;
+
+        return new ArrayList<>(values);
 
     }
-
-//    public static List<CoronaData> countryTotalCasesLineChart(){
-//        lineData = new ArrayList<CoronaData>();
-//
-//        for (CoronaData data: list) {
-//
-//
-//        }
-//        return null;
-//    }
 
 
 }
