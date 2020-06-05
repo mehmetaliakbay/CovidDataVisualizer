@@ -31,3 +31,8 @@ represent a country. There is a also a listview next to graphs,
 which list the names of countries. The user can select/deselect
 multiple countries in the listview to be displayed on the graphs. The graph can updated when the user changed their choices. 
 
+
+## Some Images from project
+
+<img src="https://github.com/mhmtaliakbay/CovidDataVisualizer/blob/master/doc/screenshot1.PNG" style="height:100px;width:100px">
+<img src="https://github.com/mhmtaliakbay/CovidDataVisualizer/blob/master/doc/screenshot2.PNG" style="height:100px;width:100px">
