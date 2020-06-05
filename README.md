@@ -2,7 +2,7 @@
 
 This project automatically get the daily data on the coronavirus pandemic
 (COVID-19) provided by the European Centre for Disease Prevention and Control
-(ECDC). I use EU Open Data Portal COVID-19 Coronavirus dataset
+(ECDC). I used the EU Open Data Portal COVID-19 Coronavirus dataset
 (https://opendata.ecdc.europa.eu/covid19/casedistribution/xml/) which is
 updated daily.
 
@@ -26,10 +26,10 @@ all columns.
 ## The cumulative number of cases and deaths by country graphics
 
 There are two graphs that show the total cases and deaths by countries over
-time. The graphs a line chart in which each line with a different color,
-represent a country. There is a also a listview next to graphs,
+time. The graphs are line charts in which each line with a different colour,
+represent a country. There is also a listview next to graphs,
 which list the names of countries. The user can select/deselect
-multiple countries in the listview to be displayed on the graphs. The graph can updated when the user changed their choices. 
+multiple countries in the listview to be displayed on the graphs. The graph can be updated when the user changed their choices. 
 
 
 ## Some Images from project
